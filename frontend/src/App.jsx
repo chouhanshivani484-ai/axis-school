@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 /* =========================================================
    PUBLIC PAGES
@@ -53,6 +53,7 @@ import AdminLayout from "./layouts/AdminLayout";
 
 import { SchoolProvider } from "./context/SchoolContext";
 
+
 /* =========================================================
    PARENT DASHBOARD
 ========================================================= */
@@ -62,6 +63,7 @@ function ParentDashboard() {
     <div className="dashboard-page">
       <div className="dashboard-container">
         <div className="dashboard-card">
+
           <div className="dashboard-icon">
             👨‍👩‍👧
           </div>
@@ -76,11 +78,13 @@ function ParentDashboard() {
             Your child's attendance, results, fees and
             school activities will appear here.
           </p>
+
         </div>
       </div>
     </div>
   );
 }
+
 
 /* =========================================================
    TEACHER DASHBOARD
@@ -91,6 +95,7 @@ function TeacherDashboard() {
     <div className="dashboard-page">
       <div className="dashboard-container">
         <div className="dashboard-card">
+
           <div className="dashboard-icon">
             👨‍🏫
           </div>
@@ -105,11 +110,13 @@ function TeacherDashboard() {
             Classes, attendance, homework, results and
             students will appear here.
           </p>
+
         </div>
       </div>
     </div>
   );
 }
+
 
 /* =========================================================
    ADMIN DASHBOARD
@@ -120,6 +127,7 @@ function AdminDashboard() {
     <div className="dashboard-page">
       <div className="dashboard-container">
         <div className="dashboard-card">
+
           <div className="dashboard-icon">
             ⚙️
           </div>
@@ -134,11 +142,13 @@ function AdminDashboard() {
             Students, teachers, attendance, fees, notices,
             admissions and reports will appear here.
           </p>
+
         </div>
       </div>
     </div>
   );
 }
+
 
 /* =========================================================
    404 PAGE
@@ -147,6 +157,7 @@ function AdminDashboard() {
 function NotFound() {
   return (
     <div className="not-found-page">
+
       <div className="not-found-card">
 
         <div className="not-found-number">
@@ -161,30 +172,34 @@ function NotFound() {
           Sorry, the page you are looking for does not exist.
         </p>
 
-        <a
-          href="/"
+        <Link
+          to="/"
           className="not-found-btn"
         >
           ← Back to Home
-        </a>
+        </Link>
 
       </div>
+
     </div>
   );
 }
+
 
 /* =========================================================
    APP
 ========================================================= */
 
 function App() {
+
   return (
+
     <SchoolProvider>
+
       <Routes>
 
         {/* =================================================
             PUBLIC WEBSITE
-            One Navbar + One Footer through PublicLayout
         ================================================= */}
 
         <Route element={<PublicLayout />}>
@@ -289,6 +304,7 @@ function App() {
 
         </Route>
 
+
         {/* =================================================
             AUTH
         ================================================= */}
@@ -302,6 +318,7 @@ function App() {
           path="/register"
           element={<Register />}
         />
+
 
         {/* =================================================
             STUDENT PORTAL
@@ -324,11 +341,13 @@ function App() {
             path="/student/attendance"
             element={
               <div className="dashboard-page">
+
                 <h1>My Attendance</h1>
 
                 <p>
                   Your attendance information will appear here.
                 </p>
+
               </div>
             }
           />
@@ -337,11 +356,13 @@ function App() {
             path="/student/results"
             element={
               <div className="dashboard-page">
+
                 <h1>My Results</h1>
 
                 <p>
                   Your examination results will appear here.
                 </p>
+
               </div>
             }
           />
@@ -350,11 +371,13 @@ function App() {
             path="/student/fees"
             element={
               <div className="dashboard-page">
+
                 <h1>My Fees</h1>
 
                 <p>
                   Your fee information will appear here.
                 </p>
+
               </div>
             }
           />
@@ -363,11 +386,13 @@ function App() {
             path="/student/homework"
             element={
               <div className="dashboard-page">
+
                 <h1>Homework</h1>
 
                 <p>
                   Your homework will appear here.
                 </p>
+
               </div>
             }
           />
@@ -376,11 +401,13 @@ function App() {
             path="/student/timetable"
             element={
               <div className="dashboard-page">
+
                 <h1>Timetable</h1>
 
                 <p>
                   Your class timetable will appear here.
                 </p>
+
               </div>
             }
           />
@@ -389,16 +416,19 @@ function App() {
             path="/student/profile"
             element={
               <div className="dashboard-page">
+
                 <h1>My Profile</h1>
 
                 <p>
                   Your profile information will appear here.
                 </p>
+
               </div>
             }
           />
 
         </Route>
+
 
         {/* =================================================
             PARENT PORTAL
@@ -421,11 +451,13 @@ function App() {
             path="/parent/attendance"
             element={
               <div className="dashboard-page">
+
                 <h1>Child Attendance</h1>
 
                 <p>
                   Your child's attendance will appear here.
                 </p>
+
               </div>
             }
           />
@@ -434,11 +466,13 @@ function App() {
             path="/parent/results"
             element={
               <div className="dashboard-page">
+
                 <h1>Child Results</h1>
 
                 <p>
                   Your child's examination results will appear here.
                 </p>
+
               </div>
             }
           />
@@ -447,11 +481,13 @@ function App() {
             path="/parent/fees"
             element={
               <div className="dashboard-page">
+
                 <h1>School Fees</h1>
 
                 <p>
                   Your child's fee information will appear here.
                 </p>
+
               </div>
             }
           />
@@ -460,11 +496,13 @@ function App() {
             path="/parent/homework"
             element={
               <div className="dashboard-page">
+
                 <h1>Homework</h1>
 
                 <p>
                   Homework information will appear here.
                 </p>
+
               </div>
             }
           />
@@ -473,11 +511,13 @@ function App() {
             path="/parent/timetable"
             element={
               <div className="dashboard-page">
+
                 <h1>Timetable</h1>
 
                 <p>
                   Your child's timetable will appear here.
                 </p>
+
               </div>
             }
           />
@@ -486,11 +526,13 @@ function App() {
             path="/parent/notices"
             element={
               <div className="dashboard-page">
+
                 <h1>School Notices</h1>
 
                 <p>
                   School notices will appear here.
                 </p>
+
               </div>
             }
           />
@@ -499,16 +541,19 @@ function App() {
             path="/parent/profile"
             element={
               <div className="dashboard-page">
+
                 <h1>Parent Profile</h1>
 
                 <p>
                   Parent profile information will appear here.
                 </p>
+
               </div>
             }
           />
 
         </Route>
+
 
         {/* =================================================
             TEACHER PORTAL
@@ -522,6 +567,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
 
         {/* =================================================
             ADMIN PORTAL
@@ -544,10 +590,13 @@ function App() {
             path="/admin/admissions"
             element={
               <div className="dashboard-page">
+
                 <h1>Admissions</h1>
+
                 <p>
                   Manage student admission applications.
                 </p>
+
               </div>
             }
           />
@@ -556,10 +605,13 @@ function App() {
             path="/admin/students"
             element={
               <div className="dashboard-page">
+
                 <h1>Students</h1>
+
                 <p>
                   Manage AXIS School students.
                 </p>
+
               </div>
             }
           />
@@ -568,10 +620,13 @@ function App() {
             path="/admin/teachers"
             element={
               <div className="dashboard-page">
+
                 <h1>Teachers</h1>
+
                 <p>
                   Manage school teachers.
                 </p>
+
               </div>
             }
           />
@@ -580,10 +635,13 @@ function App() {
             path="/admin/attendance"
             element={
               <div className="dashboard-page">
+
                 <h1>Attendance</h1>
+
                 <p>
                   Manage student attendance.
                 </p>
+
               </div>
             }
           />
@@ -592,10 +650,13 @@ function App() {
             path="/admin/fees"
             element={
               <div className="dashboard-page">
+
                 <h1>Fees</h1>
+
                 <p>
                   Manage student fees.
                 </p>
+
               </div>
             }
           />
@@ -604,10 +665,13 @@ function App() {
             path="/admin/results"
             element={
               <div className="dashboard-page">
+
                 <h1>Results</h1>
+
                 <p>
                   Manage examination results.
                 </p>
+
               </div>
             }
           />
@@ -616,10 +680,13 @@ function App() {
             path="/admin/notices"
             element={
               <div className="dashboard-page">
+
                 <h1>Notices</h1>
+
                 <p>
                   Create and manage school notices.
                 </p>
+
               </div>
             }
           />
@@ -628,10 +695,13 @@ function App() {
             path="/admin/events"
             element={
               <div className="dashboard-page">
+
                 <h1>Events</h1>
+
                 <p>
                   Manage school events.
                 </p>
+
               </div>
             }
           />
@@ -640,15 +710,19 @@ function App() {
             path="/admin/messages"
             element={
               <div className="dashboard-page">
+
                 <h1>Messages</h1>
+
                 <p>
                   Manage contact messages.
                 </p>
+
               </div>
             }
           />
 
         </Route>
+
 
         {/* =================================================
             404
@@ -660,6 +734,7 @@ function App() {
         />
 
       </Routes>
+
     </SchoolProvider>
   );
 }

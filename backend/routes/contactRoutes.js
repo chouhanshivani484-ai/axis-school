@@ -10,21 +10,39 @@ const {
 
 const router = express.Router();
 
+// ========================================
+// CREATE CONTACT
+// POST /api/contacts
+// ========================================
 
-// Create contact message
 router.post("/", createContact);
 
-// Get all contact messages
+// ========================================
+// GET ALL CONTACTS
+// GET /api/contacts
+// ========================================
+
 router.get("/", getContacts);
 
-// Get single contact message
+// ========================================
+// GET SINGLE CONTACT
+// GET /api/contacts/:id
+// ========================================
+
 router.get("/:id", getContactById);
 
-// Update contact
+// ========================================
+// UPDATE CONTACT
+// PUT /api/contacts/:id
+// ========================================
+
 router.put("/:id", updateContact);
 
-// Delete contact
-router.delete("/:id", deleteContact);
+// ========================================
+// DELETE CONTACT
+// DELETE /api/contacts/:id
+// ========================================
 
+router.delete("/:id", deleteContact);
 
 module.exports = router;

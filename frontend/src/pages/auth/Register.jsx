@@ -1,6 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authService";
+import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -8,12 +9,15 @@ function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    phone: "",
     password: "",
-    role: "patient",
+    confirmPassword: "",
+    phone: "",
+    role: "student",
   });
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -25,24 +29,51 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !form.name ||
+      !form.email ||
+      !form.password ||
+      !form.confirmPassword ||
+      !form.phone
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    }
+
+    if (form.phone.length !== 10) {
+      alert("Please enter a valid 10 digit phone number");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const response = await registerUser({
         name: form.name,
         email: form.email,
-        phone: form.phone,
         password: form.password,
+        phone: form.phone,
         role: form.role,
-        location: "India",
       });
 
-      if (response.success) {
-        alert("Registration successful! Please login.");
-        navigate("/login");
-      }
+      console.log("REGISTER RESPONSE:", response);
+
+      alert("Registration successful! 🎉");
+
+      navigate("/login");
     } catch (error) {
       console.error("REGISTER ERROR:", error);
+
       alert(error.message || "Registration failed");
     } finally {
       setLoading(false);
@@ -50,115 +81,275 @@ function Register() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
+    <div className="register-page">
 
-        {/* Logo */}
-        <div className="auth-logo">
-          ✚ HospitalMarket
+      <div className="register-container">
+
+        {/* LEFT SECTION */}
+        <div className="register-info">
+
+          <div className="school-logo">
+            <span>AXIS</span>
+            <small>SCHOOL</small>
+          </div>
+
+          <h1>Join AXIS School 🎓</h1>
+
+          <p>
+            Create your AXIS School account and get access
+            to academics, activities and school information.
+          </p>
+
+          <div className="register-features">
+
+            <div>
+              <span>✓</span>
+              <p>Secure Account</p>
+            </div>
+
+            <div>
+              <span>✓</span>
+              <p>Easy Access</p>
+            </div>
+
+            <div>
+              <span>✓</span>
+              <p>School Portal</p>
+            </div>
+
+          </div>
+
         </div>
 
-        <h1>Create Account</h1>
+        {/* RIGHT FORM */}
+        <div className="register-card">
 
-        <p className="auth-subtitle">
-          Create your HospitalMarket account
-        </p>
+          <div className="register-card-header">
 
-        <form onSubmit={handleSubmit}>
+            <h2>Create Account</h2>
 
-          {/* Name */}
-          <div className="form-group">
-            <label>Full Name</label>
+            <p>
+              Enter your details to register
+            </p>
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your full name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
           </div>
 
-          {/* Email */}
-          <div className="form-group">
-            <label>Email Address</label>
+          <form onSubmit={handleSubmit}>
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            {/* NAME */}
+            <div className="input-group">
 
-          {/* Phone */}
-          <div className="form-group">
-            <label>Phone Number</label>
+              <label htmlFor="name">
+                Full Name
+              </label>
 
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Enter phone number"
-              value={form.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                value={form.name}
+                onChange={handleChange}
+                autoComplete="name"
+                required
+              />
 
-          {/* Password */}
-          <div className="form-group">
-            <label>Password</label>
+            </div>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Create password"
-              value={form.password}
-              onChange={handleChange}
-              minLength="6"
-              required
-            />
-          </div>
+            {/* EMAIL */}
+            <div className="input-group">
 
-          {/* Account Type */}
-          <div className="form-group">
-            <label>Account Type</label>
+              <label htmlFor="email">
+                Email Address
+              </label>
 
-            <select
-              name="role"
-              value={form.role}
-              onChange={handleChange}
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                autoComplete="email"
+                required
+              />
+
+            </div>
+
+            {/* PHONE */}
+            <div className="input-group">
+
+              <label htmlFor="phone">
+                Phone Number
+              </label>
+
+              <input
+                id="phone"
+                type="tel"
+                name="phone"
+                placeholder="Enter 10 digit phone number"
+                value={form.phone}
+                onChange={handleChange}
+                maxLength="10"
+                autoComplete="tel"
+                required
+              />
+
+            </div>
+
+            {/* ROLE */}
+            <div className="input-group">
+
+              <label htmlFor="role">
+                Select Role
+              </label>
+
+              <select
+                id="role"
+                name="role"
+                value={form.role}
+                onChange={handleChange}
+                required
+              >
+
+                <option value="student">
+                  Student
+                </option>
+
+                <option value="parent">
+                  Parent
+                </option>
+
+                <option value="teacher">
+                  Teacher
+                </option>
+
+              </select>
+
+            </div>
+
+            {/* PASSWORD */}
+            <div className="input-group">
+
+              <label htmlFor="password">
+                Password
+              </label>
+
+              <div className="password-wrapper">
+
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create password"
+                  value={form.password}
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="show-password"
+                  onClick={() =>
+                    setShowPassword(!showPassword)
+                  }
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* CONFIRM PASSWORD */}
+            <div className="input-group">
+
+              <label htmlFor="confirmPassword">
+                Confirm Password
+              </label>
+
+              <div className="password-wrapper">
+
+                <input
+                  id="confirmPassword"
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
+                  name="confirmPassword"
+                  placeholder="Confirm your password"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="show-password"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                >
+                  {showConfirmPassword ? "🙈" : "👁️"}
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* TERMS */}
+            <div className="terms-row">
+
+              <label>
+
+                <input
+                  type="checkbox"
+                  required
+                />
+
+                <span>
+                  I agree to the terms and conditions
+                </span>
+
+              </label>
+
+            </div>
+
+            {/* REGISTER BUTTON */}
+            <button
+              type="submit"
+              className="register-button"
+              disabled={loading}
             >
-              <option value="patient">Patient</option>
-              <option value="hospital">Hospital</option>
-              <option value="clinic">Clinic</option>
-              <option value="medical">Medical</option>
-            </select>
+              {loading
+                ? "Creating Account..."
+                : "Create Account"}
+            </button>
+
+          </form>
+
+          {/* LOGIN LINK */}
+          <div className="login-link">
+
+            <span>
+              Already have an account?
+            </span>
+
+            <Link to="/login">
+              Sign In
+            </Link>
+
           </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="btn-primary auth-submit"
-            disabled={loading}
-          >
-            {loading ? "Creating Account..." : "Create Account"}
-          </button>
-
-        </form>
-
-        {/* Login Link */}
-        <p className="auth-footer">
-          Already have an account?{" "}
-          <Link to="/login">
-            Login
-          </Link>
-        </p>
+        </div>
 
       </div>
+
     </div>
   );
 }

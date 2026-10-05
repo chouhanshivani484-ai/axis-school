@@ -1,84 +1,68 @@
+const dns = require("dns");
+
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+
+// Load environment variables
+dotenv.config();
 
 // Database
 const connectDB = require("./config/db");
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
-const admissionRoutes = require("./routes/admissionRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+const studentRoutes = require("./routes/studentRoutes");
 
-// Load environment variables
-dotenv.config();
-
-// Connect MongoDB
-connectDB();
-
+// Create Express app
 const app = express();
 
+// ===============================
+// DATABASE CONNECTION
+// ===============================
+connectDB();
 
-// =====================================================
+// ===============================
 // MIDDLEWARE
-// =====================================================
-
-// Enable CORS
+// ===============================
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true,
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Parse JSON request body
 app.use(express.json());
 
-// Parse URL encoded data
-app.use(express.urlencoded({ extended: true }));
+// ===============================
+// API ROUTES
+// ===============================
 
-
-// =====================================================
-// HOME ROUTE
-// =====================================================
-
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "AXIS School Backend API is running",
-  });
-});
-
-
-// =====================================================
-// TEST ROUTE
-// =====================================================
-
-app.get("/api/test", (req, res) => {
-  res.json({
-    success: true,
-    message: "AXIS School Backend is working",
-  });
-});
-
-
-// =====================================================
-// AUTH ROUTES
-// =====================================================
-
+// Authentication
 app.use("/api/auth", authRoutes);
 
+// Contact
+app.use("/api/contacts", contactRoutes);
 
-// =====================================================
-// ADMISSION ROUTES
-// =====================================================
+// Students
+app.use("/api/students", studentRoutes);
 
-app.use("/api/admissions", admissionRoutes);
+// ===============================
+// HOME / TEST ROUTE
+// ===============================
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "AXIS School API is running",
+  });
+});
 
-
-// =====================================================
+// ===============================
 // 404 ROUTE
-// =====================================================
-
+// ===============================
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -86,42 +70,11 @@ app.use((req, res) => {
   });
 });
 
-
-// =====================================================
+// ===============================
 // ERROR HANDLER
-// =====================================================
-
+// ===============================
 app.use((err, req, res, next) => {
   console.error("SERVER ERROR:", err);
-
-  // Mongoose validation error
-  if (err.name === "ValidationError") {
-    const errors = Object.values(err.errors).map(
-      (error) => error.message
-    );
-
-    return res.status(400).json({
-      success: false,
-      message: "Validation failed",
-      errors,
-    });
-  }
-
-  // Mongoose CastError
-  if (err.name === "CastError") {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid ID format",
-    });
-  }
-
-  // Duplicate MongoDB field
-  if (err.code === 11000) {
-    return res.status(400).json({
-      success: false,
-      message: "Duplicate value already exists",
-    });
-  }
 
   res.status(500).json({
     success: false,
@@ -129,13 +82,15 @@ app.use((err, req, res, next) => {
   });
 });
 
-
-// =====================================================
+// ===============================
 // SERVER
-// =====================================================
-
+// ===============================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`AXIS School Server running on port ${PORT}`);
+  console.log("=================================");
+  console.log("AXIS SCHOOL BACKEND");
+  console.log(`Server running on port ${PORT}`);
+  console.log(`http://localhost:${PORT}`);
+  console.log("=================================");
 });
